@@ -44,3 +44,5 @@ NOTE: all recipes endpoints require `userId` in request header. You can use this
 * 9f9349a6-19ce-46fe-a0cf-b4bffaba8772
 
 Or create a user (POST /api/v1/users) and use its userId. 
+
+You can also use postman collection (located in `project_root/recipes.postman_collection.json`) to test the API.

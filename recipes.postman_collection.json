@@ -1,0 +1,194 @@
+{
+	"info": {
+		"_postman_id": "9538a252-d5b0-4aee-b182-59550471bf70",
+		"name": "recipes",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "13527478"
+	},
+	"item": [
+		{
+			"name": "get users",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/api/v1/users",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "create user",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"firstName\":\"navid\", \"lastName\":\"babakhani\", \"emailAddress\":\"aaaa@f.com\"}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/api/v1/users",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get recipes",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "userId",
+						"value": "9f9349a6-19ce-46fe-a0cf-b4bffaba8772",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \n    \n    \"diets\": {\"exclude\": [\"HALAL\"]}\n    \n    \n}\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/api/v1/recipes",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"recipes"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "create recipe",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "userId",
+						"value": "9f9349a6-19ce-46fe-a0cf-b4bffaba8772",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"title\": \"gheyme\",\n    \"numberOfServings\" : \"4\",\n    \"ingredients\" : [{\"name\":\"adas\", \"amount\":\"2 kiloo\"},{\"name\":\"rice\"},{\"name\":\"advie\"},{\"name\":\"goosht\"}],\n    \"diet\" : [\"HALAL\"],\n    \"instruction\": \"dfsd f sdfs oven\",\n    \"preparationTime\": 30\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/api/v1/recipes",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"recipes"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "update recipe",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "userId",
+						"value": "9f9349a6-19ce-46fe-a0cf-b4bffaba8772",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"id\": 2,\n    \"title\": \"Sabzi polo\",\n    \"numberOfServings\" : \"1000\",\n    \"ingredients\" : [{\"name\":\"sabzi\", \"amount\":\"2 kiloo\"},{\"name\":\"rice\"},{\"name\":\"advie\"},{\"name\":\"goosht\"}],\n    \"diet\" : [\"HALAL\", \"VEGETARIAN\"],\n    \"instruction\": \"  dfsd f sdfs oven\",\n    \"preparationTime\": 45\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/api/v1/recipes",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"recipes"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "delete recipe",
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "userId",
+						"value": "9f9349a6-19ce-46fe-a0cf-b4bffaba8772",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "localhost:8080/api/v1/recipes/2",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"recipes",
+						"2"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
