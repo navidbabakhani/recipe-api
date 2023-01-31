@@ -1,0 +1,441 @@
+openapi: 3.0.1
+info:
+  description: Recipe API
+  title: Recipe API
+  version: 0.0.1
+tags:
+  - name: recipes
+  - name: users
+paths:
+  /api/v1/recipes:
+    get:
+      summary: Search all recipes by different parameters for a specified user
+      description: Searches and returns a list of recipes by different parameters
+      tags:
+        - recipes
+      parameters:
+        - $ref: '#/components/parameters/userId'
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SearchCriteria'
+      responses:
+        200:
+          description: List of recipes
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/RecipeResponseBody'
+        400:
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        500:
+          description: Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+    post:
+      summary: Create a new recipe
+      description: Creates a new recipe for the specified user
+      tags:
+        - recipes
+      parameters:
+        - $ref: '#/components/parameters/userId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RecipeRequestBody'
+      responses:
+        201:
+          description: The created recipe
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RecipeResponseBody'
+        400:
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        500:
+          description: Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+    put:
+      summary: Update an existing recipe
+      description: Updates an existing recipe for the specified user
+      tags:
+        - recipes
+      parameters:
+        - $ref: '#/components/parameters/userId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RecipeRequestBody'
+      responses:
+        200:
+          description: The updated recipe
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RecipeResponseBody'
+        400:
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        404:
+          description: Recipe Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        500:
+          description: Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /api/v1/recipes/{recipeId}:
+    delete:
+      summary: Delete an existing recipe
+      description: Deletes an existing recipe for the specified user
+      tags:
+        - recipes
+      parameters:
+        - $ref: '#/components/parameters/userId'
+        - name: recipeId
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        200:
+          description: No Content
+          content: {}
+        400:
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        404:
+          description: Recipe Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        500:
+          description: Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /api/v1/users:
+    get:
+      summary: List all users
+      tags:
+        - users
+      responses:
+        200:
+          description: An array of users
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Users'
+        500:
+          description: Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+    post:
+      summary: Create a user
+      tags:
+        - users
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - firstName
+                - lastName
+                - emailAddress
+              properties:
+                id:
+                  type: string
+                  format: uuid
+                firstName:
+                  type: string
+                  nullable: false
+                lastName:
+                  type: string
+                  nullable: false
+                emailAddress:
+                  type: string
+                  maxLength: 100
+                  pattern: "^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,4}$"
+                  nullable: false
+                  example: someone@somecompany.com
+      responses:
+        201:
+          description: User created
+        400:
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        500:
+          description: Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /api/v1/users/{userId}:
+    get:
+      summary: Info for a specific user
+      tags:
+        - users
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+            example: 'b1a904a6-b5a2-76d1-7bc6-652da1b3a541'
+      responses:
+        200:
+          description: Expected response to a valid request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        404:
+          description: User Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        500:
+          description: Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+components:
+  parameters:
+    userId:
+      name: userId
+      in: header
+      description: Id of the user who wants to send/receive data
+      required: true
+      schema:
+        type: string
+        format: uuid
+        example: 'b1a904a6-b5a2-76d1-7bc6-652da1b3a541'
+
+  schemas:
+    RecipeRequestBody:
+      type: object
+      properties:
+        title:
+          type: string
+          example: 'Italian Pizza'
+          nullable: false
+        description:
+          type: string
+        ingredients:
+          type: array
+          nullable: false
+          items:
+            type: object
+            properties:
+              name:
+                type: string
+              amount:
+                type: string
+        numberOfServings:
+          type: integer
+          nullable: false
+          example: 4
+        instruction:
+          type: string
+          nullable: false
+        diets:
+          type: array
+          nullable: false
+          items:
+            type: string
+            enum:
+              - VEGETARIAN
+              - SUGAR_FREE
+              - VEGAN
+              - HALAL
+              - GLUTEN_FREE
+          example: [ "VEGETARIAN", "SUGAR_FREE" ]
+        timeToPrepare:
+          type: integer
+          description: preparation time in minutes
+          example: 10
+    RecipeResponseBody:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        title:
+          type: string
+          example: "Italian Pizza"
+        ingredients:
+          type: array
+          nullable: false
+          items:
+            type: object
+            properties:
+              name:
+                type: string
+              amount:
+                type: string
+        numberOfServings:
+          type: integer
+          example: 4
+        instruction:
+          type: string
+        diets:
+          type: array
+          items:
+            type: string
+            enum:
+              - VEGETARIAN
+              - SUGAR_FREE
+              - VEGAN
+              - HALAL
+              - GLUTEN_FREE
+          example: ["VEGETARIAN", "SUGAR_FREE"]
+        timeToPrepare:
+          type: integer
+          description: preparation time in minutes
+          example: 10
+        createdAt:
+          type: string
+          format: date-time
+    SearchCriteria:
+      type: object
+      properties:
+        title:
+          type: string
+          nullable: true
+        numberOfServings:
+          type: object
+          properties:
+            number:
+              type: string
+              format: integer
+            operator:
+              type: string
+              example: "one of: < > = != >= <="
+        instruction:
+          type: string
+          nullable: true
+        ingredients:
+          type: object
+          properties:
+            include:
+              type: array
+              items:
+                type: string
+            exclude:
+              type: array
+              items:
+                type: string
+          nullable: true
+          example: { "include": ["bread", "water"], "exclude": ["tomato"] }
+        diets:
+          type: object
+          properties:
+            include:
+              type: array
+              items:
+                type: string
+                enum:
+                  - VEGETARIAN
+                  - SUGAR_FREE
+                  - VEGAN
+                  - HALAL
+                  - GLUTEN_FREE
+            exclude:
+              type: array
+              items:
+                type: string
+                enum:
+                  - VEGETARIAN
+                  - SUGAR_FREE
+                  - VEGAN
+                  - HALAL
+                  - GLUTEN_FREE
+          nullable: true
+          example: { "include": [ "VEGAN" ], "exclude": [ "GLUTEN_FREE" ] }
+    User:
+      type: object
+      required:
+        - firstName
+        - lastName
+        - emailAddress
+      properties:
+        id:
+          type: string
+          format: uuid
+        firstName:
+          type: string
+          nullable: false
+        lastName:
+          type: string
+          nullable: false
+        emailAddress:
+          type: string
+          maxLength: 100
+          pattern: "^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,4}$"
+          nullable: false
+          example: someone@somecompany.com
+        createdAt:
+          type: string
+          format: date-time
+    Users:
+      type: array
+      items:
+        $ref: "#/components/schemas/User"
+    ErrorResponse:
+      type: object
+      properties:
+        service:
+          type: string
+          example: recipe-api
+        errorCode:
+          type: integer
+          example: 4xx|5xx
+        errorMessage:
+          type: string
+          example: 'Recipe not found'
+        dateTime:
+          type: string
+          format: date-time

@@ -1,0 +1,20 @@
+spring:
+  application:
+    name: recipe-api
+
+  datasource:
+    url: jdbc:postgresql://localhost:5432/recipesdb
+    username: admin-user
+    password: admin-password
+
+  liquibase:
+    change-log: classpath:db/changelog/changelog.sql
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,httptrace,beans
+  trace:
+    http:
+      include: REMOTE_ADDRESS,SESSION_ID,TIME_TAKEN
